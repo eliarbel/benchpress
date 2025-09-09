@@ -66,7 +66,7 @@ STR_TO_IBM_FAKE_BACKEND = {
     "fake_sherbrooke": fake_backends.FakeSherbrooke,
     "fake_singapore_v2": fake_backends.FakeSingaporeV2,
     "fake_sydney_v2": fake_backends.FakeSydneyV2,
-    "fake_torino": fake_backends.FakeTorino,
+    # "fake_torino": fake_backends.FakeTorino,
     "fake_toronto_v2": fake_backends.FakeTorontoV2,
     "fake_valencia_v2": fake_backends.FakeValenciaV2,
     "fake_vigo_v2": fake_backends.FakeVigoV2,
