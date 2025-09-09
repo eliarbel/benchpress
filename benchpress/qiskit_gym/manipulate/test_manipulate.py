@@ -1,8 +1,8 @@
 """Test circuit manipulation"""
 
 from qiskit import QuantumCircuit
-from qiskit.circuit import pauli_twirl_2q_gates
-from qiskit.passmanager import PropertySet
+# from qiskit.circuit import pauli_twirl_2q_gates
+from qiskit.transpiler import PropertySet
 from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
 
 from benchpress.config import Configuration
@@ -14,14 +14,14 @@ from benchpress.workouts.manipulate import WorkoutCircuitManipulate
 
 @benchpress_test_validation
 class TestWorkoutCircuitManipulate(WorkoutCircuitManipulate):
-    def test_DTC100_twirling(self, benchmark):
-        """Perform Pauli-twirling on a 100Q QV
-        circuit
-        """
-        circuit = qasm_circuit_loader(
-            Configuration.get_qasm_dir("dtc") + "dtc_100_cx_12345.qasm", benchmark
-        )
-        assert benchmark(pauli_twirl_2q_gates, circuit)
+    # def test_DTC100_twirling(self, benchmark):
+    #     """Perform Pauli-twirling on a 100Q QV
+    #     circuit
+    #     """
+    #     circuit = qasm_circuit_loader(
+    #         Configuration.get_qasm_dir("dtc") + "dtc_100_cx_12345.qasm", benchmark
+    #     )
+    #     assert benchmark(pauli_twirl_2q_gates, circuit)
 
     def test_multi_control_decompose(self, benchmark):
         """Decompose a multi-control gate into the

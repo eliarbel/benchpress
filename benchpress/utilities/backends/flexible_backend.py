@@ -14,7 +14,7 @@ import math
 import scipy.optimize as opt
 import rustworkx as rx
 
-from qiskit.providers.fake_provider.fake_backend import FakeBackendV2 as GenericBackendV2
+from benchpress.generic_backend_v2 import GenericBackendV2
 from qiskit.providers.models.backendconfiguration import QasmBackendConfiguration
 from qiskit.transpiler import CouplingMap
 
