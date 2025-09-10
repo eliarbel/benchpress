@@ -2,8 +2,8 @@
 
 import numpy as np
 from qiskit import QuantumCircuit
-from qiskit.circuit.library import quantum_volume
-# from qiskit.circuit.library import efficient_su2
+from qiskit.circuit.library import QuantumVolume
+from qiskit.circuit.library import EfficientSU2
 from qiskit.qasm2 import load
 
 from benchpress.config import Configuration
@@ -28,7 +28,7 @@ class TestWorkoutCircuitConstruction(WorkoutCircuitConstruction):
 
         @benchmark
         def result():
-            out = quantum_volume(100, 100, seed=SEED)
+            out = QuantumVolume(100, 100, seed=SEED)
             return out
 
         assert result
@@ -68,49 +68,49 @@ class TestWorkoutCircuitConstruction(WorkoutCircuitConstruction):
 
         assert result
 
-    def test_clifford_build(self, benchmark):
-        """Measures an SDKs ability to build a 100Q
-        Clifford circuit from scratch.
+    # def test_clifford_build(self, benchmark):
+    #     """Measures an SDKs ability to build a 100Q
+    #     Clifford circuit from scratch.
+    #     """
+
+    #     @benchmark
+    #     def result():
+    #         random_clifford_circuit(100, seed=SEED)
+    #         return True
+
+    #     assert result
+
+    def test_param_circSU2_100_build(self, benchmark):
+        """Measures an SDKs ability to build a
+        parameterized efficient SU2 circuit with circular entanglement
+        over 100Q utilizing 4 repetitions.  This will yield a
+        circuit with 1000 parameters
         """
+        N = 100
 
         @benchmark
         def result():
-            random_clifford_circuit(100, seed=SEED)
-            return True
+            out = EfficientSU2(N, reps=4, entanglement="circular")
+            return out
 
-        assert result
+        assert result.num_parameters == 1000
 
-    # def test_param_circSU2_100_build(self, benchmark):
-    #     """Measures an SDKs ability to build a
-    #     parameterized efficient SU2 circuit with circular entanglement
-    #     over 100Q utilizing 4 repetitions.  This will yield a
-    #     circuit with 1000 parameters
-    #     """
-    #     N = 100
+    def test_param_circSU2_100_bind(self, benchmark):
+        """Measures an SDKs ability to bind 1000 parameters
+        to efficient SU2 circuit over 100Q with circular
+        entanglement and 4 repetitions.
+        """
+        N = 100
+        qc = EfficientSU2(N, reps=4, entanglement="circular")
+        assert qc.num_parameters == 1000
+        params = np.linspace(0, 2 * np.pi, qc.num_parameters)
 
-    #     @benchmark
-    #     def result():
-    #         out = efficient_su2(N, reps=4, entanglement="circular")
-    #         return out
+        @benchmark
+        def result():
+            out = qc.assign_parameters(params)
+            return out
 
-    #     assert result.num_parameters == 1000
-
-    # def test_param_circSU2_100_bind(self, benchmark):
-    #     """Measures an SDKs ability to bind 1000 parameters
-    #     to efficient SU2 circuit over 100Q with circular
-    #     entanglement and 4 repetitions.
-    #     """
-    #     N = 100
-    #     qc = efficient_su2(N, reps=4, entanglement="circular")
-    #     assert qc.num_parameters == 1000
-    #     params = np.linspace(0, 2 * np.pi, qc.num_parameters)
-
-    #     @benchmark
-    #     def result():
-    #         out = qc.assign_parameters(params)
-    #         return out
-
-    #     assert result.num_parameters == 0
+        assert result.num_parameters == 0
 
     def test_QV100_qasm2_import(self, benchmark):
         """QASM import of QV100 circuit"""
